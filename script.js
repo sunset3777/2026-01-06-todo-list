@@ -36,9 +36,9 @@ ul.addEventListener('click', deleteItem);
 
 
 function deleteItem(e) {
-    e.preventDefault();
-
+    
     if (e.target.classList.contains('fa-times')) {
+        e.preventDefault();
         const targetLi = e.target.closest('li');
         targetLi.remove();
         
