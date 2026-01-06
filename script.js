@@ -1,5 +1,6 @@
 //新增刪除功能
 ul.addEventListener('click', deleteItem);
+const ul = document.querySelector('#list')
 
 function deleteItem(e) {
     e.preventDefault();
