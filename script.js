@@ -1,8 +1,9 @@
-//renderData儲存陣列
-let tododata=[{
-    content:'做todo list !',
-    checked:false
-}];
+//引入proxy-web-storage套件
+import {local} from './node_modules/proxy-web-storage/package.json'
+if(!local.tododata){
+    local.tododata=[{content: '做todo list !', checked: false}];
+}
+
 
 //新增新的待辦事項
 const inputText = document.querySelector('#inputtext input')
@@ -17,10 +18,13 @@ function addItem(e){
         return;
     }
 
-    const newtodo ={
-        content:inputText.value,
-        checked:false
-    }
+    local.tododata.push({
+        content: inputText.value,
+        checked: false
+    });
+
+    inputText.value = '';
+    renderData();
 
     tododata.push(newtodo);
     inputText.value = '';
@@ -38,10 +42,9 @@ function deleteItem(e) {
 
     if (e.target.classList.contains('fa-times')) {
         e.preventDefault();
-        const targetLi = e.target.closest('li');
-        targetLi.remove();
-        
-        console.log('項目已刪除');
+        const index = e.target.getAttribute('data-num');
+        local.tododata.splice(index, 1);
+        renderData();
     }
 }
 
