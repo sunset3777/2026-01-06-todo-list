@@ -1,3 +1,10 @@
+//引入proxy-web-storage套件
+import {local} from './node_modules/proxy-web-storage/package.json'
+if(!local.tododata){
+    local.tododata=[{content: '做todo list !', checked: false}];
+}
+
+
 //新增新的待辦事項
 const inputText = document.querySelector('#inputtext input')
 const addButton = document.querySelector('#inputtext a')
@@ -11,20 +18,13 @@ function addItem(e){
         return;
     }
 
-    const li = document.createElement('li')
-    
-    li .innerHTML =
-    `<label class="todoList_label">
-    <input class="todoList_input" type="checkbox" value="true">
-    <span>${inputText.value}</span>
-    </label>
-    <a href="#">
-    <i class="fa fa-times"></i>
-    </a>`
-    
-    ul .appendChild(li);
+    local.tododata.push({
+        content: inputText.value,
+        checked: false
+    });
 
-    inputText.value ='';
+    inputText.value = '';
+    renderData();
 
     console.log('成功加入新待辦事項!');
 }
@@ -39,9 +39,8 @@ function deleteItem(e) {
     
     if (e.target.classList.contains('fa-times')) {
         e.preventDefault();
-        const targetLi = e.target.closest('li');
-        targetLi.remove();
-        
-        console.log('項目已刪除');
+        const index = e.target.getAttribute('data-num');
+        local.tododata.splice(index, 1);
+        renderData();
     }
 }
